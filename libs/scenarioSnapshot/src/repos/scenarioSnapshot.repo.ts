@@ -14,7 +14,7 @@ export class ScenarioSnapshotRepo extends Repository<ScenarioSnapshot> {
     const scenarioSnapshotInDb = await this.findOneBy({
       timestamp: scenarioSnapshot.timestamp,
     });
-    if (scenarioSnapshotInDb === undefined) {
+    if (scenarioSnapshotInDb !== undefined) {
       await this.save(scenarioSnapshot);
       scenarioSnapshot.scenarioSnapshotStatus = ScenarioSnapshotStatus.Stored;
       await this.update(
@@ -22,6 +22,7 @@ export class ScenarioSnapshotRepo extends Repository<ScenarioSnapshot> {
         {
           actionGroupStatus: scenarioSnapshot.actionGroupStatus,
           scenarioSnapshotStatus: scenarioSnapshot.scenarioSnapshotStatus,
+          updatedAt: new Date(),
         },
       );
     } else {
